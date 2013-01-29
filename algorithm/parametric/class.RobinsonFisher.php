@@ -1,40 +1,32 @@
 <?php
+
 /**
  * FileName.php
  *
  * @author Yu Chao <yuchao86@gmail.com>
- * @package Robotgen/algorithm/genetic/
+ * @package Robotgen/algorithm/parametric/
  * @version v1.0
  * @license  GPL     
  *
  * @reference
- *	-Algorithm Reference
+ * 	-Algorithm Reference
  * @see
- *	-web Links
- *	-
+ * 	-web Links
+ * 	-
  *
  */
 /**
  *  Algorithm Description
- *=================================================================
+ * =================================================================
  */
- namespace Robotgen;
+// namespace Robotgen;
 /**
  * RobinsonFisher.php
- *
- * @author Junya Hayashi <junya.hayashi@gree.co.jp>
- * @package GREE
- * @version $Id$
- *
- * 単純ベイズ分類器を改良した Gray Robinson による Robinson Fisher 方式の分類器
- *
- * 参考
  *  - Spam Detection <http://radio-weblogs.com/0101454/stories/2002/09/16/spamDetection.html>
  *  - A Statistical Approach to the Spam Problem <http://www.linuxjournal.com/article/6467>
  *  - Handling Redundancy in Email Token Probabilities (Gray Robinson, 2004)
  *  - Inverse chi-square algorithm <http://garyrob.blogs.com/chi2p.py>
  */
-
 require_once GREE_SERVICE_CLASSIFIER_CLASS_ROOT . '/Bayes/Classifier.php5';
 require_once GREE_SERVICE_CLASSIFIER_CLASS_ROOT . '/Bayes/Tokenizer/Mecab.php5';
 require_once GREE_SERVICE_CLASSIFIER_CLASS_ROOT . '/Bayes/Corpus.php5';
@@ -43,7 +35,7 @@ require_once GREE_SERVICE_CLASSIFIER_CLASS_ROOT . '/Bayes/Util.php5';
 /**
  * Gree_Service_Classifier_Bayes_Classifier_RobinsonFisher
  *
- * Robinson-Fisher 法を用いた確率ベースの分類器
+ * Robinson-Fisher
  *
  * @package GREE
  * @access  public
@@ -56,9 +48,9 @@ class Gree_Service_Classifier_Bayes_Classifier_RobinsonFisher extends Gree_Servi
     private $_exclusion_radius = 0.2;
 
     /**
-     *  コンストラクタ
+     *  construct function
      */
-    public function __construct($tokenizer, $channel, $options=null) {
+    public function __construct($tokenizer, $channel, $options = null) {
         parent::__construct($tokenizer, $channel, $options);
 
         if (isset($options['initial_prob'])) {
@@ -75,20 +67,18 @@ class Gree_Service_Classifier_Bayes_Classifier_RobinsonFisher extends Gree_Servi
         }
     }
 
-
     /**
-     *  スパム確率を取得
+     *  
      *
-     *  ham, spam それぞれの結合確率 (Fisher Method) を求めたのち
+     *  ham, spam (Fisher Method) 
      *  I = (1 + H - S) / 2
-     *  で統合された出力を得る
-     *
+     *  
      *  @access  public
-     *  @param   string   $content  入力文
-     *  @param $with_context コンテキストも取得するか
-     *  @return  float/array  スパム確率 or スパム確率とコンテキストの配列
+     *  @param   string   $content  
+     *  @param $with_context 
+     *  @return  float/array 
      */
-    public function getProbability($content, $with_context=false) {
+    public function getProbability($content, $with_context = false) {
         $tokens = $this->tokenize($content);
         $spam_probs = $this->getSpamProbStream($tokens);
         $ham_probs = array_map(create_function('$a', 'return 1.0 - $a;'), $spam_probs);
@@ -97,54 +87,51 @@ class Gree_Service_Classifier_Bayes_Classifier_RobinsonFisher extends Gree_Servi
         $score = (1 + $S - $H) / 2.0;
         if ($with_context) {
             return array($score,
-                         array('spam_probs' => $spam_probs,
-                               'ham_probs' => $ham_probs,
-                               'score_s' => $S,
-                               'score_h' => $H,
-                               'score_i' => $score
-                             ));
+                array('spam_probs' => $spam_probs,
+                    'ham_probs' => $ham_probs,
+                    'score_s' => $S,
+                    'score_h' => $H,
+                    'score_i' => $score
+                    ));
         }
         return $score;
     }
 
     /**
-     *  複数の確率を結合 (Robinson-Fisher 法)
+     *  (Robinson-Fisher )
      *
-     *  p = C-1( -2.ln(prod(p)), 2*n )   : このカテゴリに所属する確率 (帰無仮説)
-     *                                     ->  十分小さい場合、このカテゴリには所属しないと判断
+     *  p = C-1( -2.ln(prod(p)), 2*n )
      */
     private function _combineProbs($probs) {
         $n = count($probs);
         $mul = create_function('$a, $b', 'return $a * $b;');
-        $p_combined = Gree_Service_Classifier_Bayes_Util::chi2p(-2 * log(array_reduce($probs, $mul, 1.0)), 2*$n);
+        $p_combined = Gree_Service_Classifier_Bayes_Util::chi2p(-2 * log(array_reduce($probs, $mul, 1.0)), 2 * $n);
         return $p_combined;
     }
 
     /**
-     *  単語のスパム確率 (Gray Robinson による方法)
+     *  (Gray Robinson)
      *
      *  @access  protected
-     *  @return  float     スパム確率
+     *  @return  float
      */
-    public function getSpamProb($word, $use_word_cache=true) {
+    public function getSpamProb($word, $use_word_cache = true) {
         $statistics = $this->corpus->getState($this->channel, true);
-        $nham = (float) $statistics['nham']==0 ? 1 : $statistics['nham'];
-        $nspam = (float) $statistics['nspam']==0 ? 1 : $statistics['nspam'];
+        $nham = (float) $statistics['nham'] == 0 ? 1 : $statistics['nham'];
+        $nspam = (float) $statistics['nspam'] == 0 ? 1 : $statistics['nspam'];
 
         $word_info = $this->corpus->getWordInfo($this->channel, $word, $use_word_cache);
 
-        // 計算済みか否かを確認
         if ($word_info['is_culculated']) {
             return $word_info['score'];
         }
 
-        // キャッシュを確認
         $cache_key = sprintf("%d:%d", $word_info['nham'], $word_info['nspam']);
         if (isset($this->cached_probs[$cache_key])) {
             return $this->cached_probs[$cache_key];
         }
 
-        // 5件未満の場合は情報が少なすぎるので initial prob とみなす
+        // initial prob
         $n = $word_info['nham'] + $word_info['nspam'];
         if ($n < 5) {
             $this->cached_probs[$cache_key] = $this->_initial_prob;
@@ -156,8 +143,8 @@ class Gree_Service_Classifier_Bayes_Classifier_RobinsonFisher extends Gree_Servi
 
         $p = $spam_ratio / ($ham_ratio + $spam_ratio);
 
-        // $s: 初期状態におけるスパム確率 (default: 0.4)
-        // $x: 初期条件の重み (default: 1.0)
+        // $s: (default: 0.4)
+        // $x: (default: 1.0)
         //
         //       $s * $x + $n * $p
         // $f = -------------------
@@ -170,25 +157,24 @@ class Gree_Service_Classifier_Bayes_Classifier_RobinsonFisher extends Gree_Servi
     }
 
     /**
-     *  文字列群のスパム確率配列を返す
      *
      *  @access  protected
-     *  @return  array     カテゴリ内における $tokens に表れる各トークン(特徴量)ごとの確率
+     *  @return  array $tokens
      */
     public function getSpamProbStream($tokens) {
         $probs = array();
         foreach ($tokens as $tok) {
             $f = $this->getSpamProb($tok);
-            // 0.5 の周辺は破棄した方が高性能 (参考文献参照)
+            // 0.5
             if (abs($f - 0.5) >= $this->_exclusion_radius) {
                 $probs[$tok] = max(0.0001, min(0.9999, $f));
             }
         }
-        // 0.5 からの距離が大きいものから順に、指定件数以内のトークンを取得
-        $cmp = create_function('$a, $b',
-                               '$aa = abs(0.5-$a); $ab = abs(0.5-$b);
+        // 0.5 
+        $cmp = create_function('$a, $b', '$aa = abs(0.5-$a); $ab = abs(0.5-$b);
                                 if ($aa==$ab) {return 0;} return ($aa > $ab) ? -1 : 1;');
         uasort($probs, $cmp);
         return array_slice($probs, 0, $this->_max_token_num, true);
     }
+
 }

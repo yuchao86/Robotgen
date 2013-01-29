@@ -4,7 +4,7 @@
  * NaiveBayes.php
  *
  * @author Yu Chao <chao.yu@gree.co.jp>
- * @package GREE
+ * @package Robotgen/algorithm/parametric/
  * @version $Id$
  *
  * @reference

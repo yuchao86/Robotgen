@@ -1,9 +1,9 @@
 <?php
 /**
- * FileName.php
+ * class.Bipolar.php
  *
  * @author Yu Chao <yuchao86@gmail.com>
- * @package Robotgen/algorithm/genetic/
+ * @package Robotgen/algorithm/parametric/
  * @version v1.0
  * @license  GPL
  *
@@ -18,10 +18,15 @@
  *  Algorithm Description
  *=================================================================
  */
- namespace Robotgen;
+ //namespace Robotgen;
 /**
  * Bipolar.php
  *
  * @version $Id$
  *
  */
+if(!class_exists("Bipolar")){
+    class Bipolar{
+        
+    }
+}
