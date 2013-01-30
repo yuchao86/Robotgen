@@ -5,7 +5,7 @@
  * @author Yu Chao <yuchao86@gmail.com>
  * @package Robotgen/algorithm/genetic/
  * @version v1.0
- * @license  GPL     
+ * @license  GPL
  *
  * @reference
  *	-Algorithm Reference
@@ -18,12 +18,12 @@
  *  Algorithm Description
  *=================================================================
  */
- namespace Robotgen;
- 
+// namespace Robotgen;
+
 
 require_once "PHPUnit.php";
 
-require_once dirname(__FILE__) . "/../lib/parametric/regression.php";
+require_once "../LearningLibrary.php";
 
 class GradientDescentTest extends PHPUnit_TestCase {
 
@@ -37,7 +37,7 @@ class GradientDescentTest extends PHPUnit_TestCase {
         $ys = array(6, 9, 12, 15);
         $parameters = array(0, 0, 0, 0);
 
-        $gd = new LL_GradientDescent_Regression($xs, $ys, $parameters);
+        $gd = new Linear_GradientDescent_Regression($xs, $ys, $parameters);
         $gd->setLearningRate(0.01);
         $gd->setRepetitions(10000);
         $gd->train();
@@ -68,7 +68,7 @@ class GradientDescentTest extends PHPUnit_TestCase {
         $ys = array(6, 9, 12, 15);
         $parameters = array(0, 0, 0, 0);
 
-        $gd = new LL_GradientDescent_Regression($xs, $ys, $parameters);
+        $gd = new Linear_GradientDescent_Regression($xs, $ys, $parameters);
         $gd->setLearningRate(0.01);
         $gd->setRepetitions(10000);
         $gd->train();

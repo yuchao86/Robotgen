@@ -18,11 +18,11 @@
  *  Algorithm Description
  *=================================================================
  */
- namespace Robotgen;
+// namespace Robotgen;
 
 require_once "PHPUnit.php";
+require_once "../LearningLibrary.php";
 
-require_once dirname(__FILE__) . "/../lib/parametric/regression.php";
 
 class StochasticGradientDescentTest extends PHPUnit_TestCase {
 
@@ -36,7 +36,7 @@ class StochasticGradientDescentTest extends PHPUnit_TestCase {
         $ys = array(6, 9, 12, 15);
         $parameters = array(0, 0, 0, 0);
 
-        $gd = new LL_StochasticGradientDescent_Regression($xs, $ys, $parameters);
+        $gd = new Linear_StochasticGradientDescent_Regression($xs, $ys, $parameters);
         $gd->setBadIterationsThreshold(5000);
         $gd->setLearningRate(0.02);
         $gd->setRepetitions(1000);

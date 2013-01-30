@@ -5,7 +5,7 @@
  * @author Yu Chao <yuchao86@gmail.com>
  * @package Robotgen/algorithm/genetic/
  * @version v1.0
- * @license  GPL     
+ * @license  GPL
  *
  * @reference
  *	-Algorithm Reference
@@ -61,13 +61,13 @@ class MatrixTest extends PHPUnit_TestCase {
 }
 
 /**
- * 	make the test suite object
+ * 	make the test suite object
  */
 $suite = new PHPUnit_TestSuite();
 $suite->addTest(new MatrixTest('testMultiply'));
 
 /**
- * 	print the PHPUnit result to HTML
+ *  print the PHPUnit result to HTML
  */
 $phpunit = new PHPUnit();
 $result = $phpunit->run($suite);

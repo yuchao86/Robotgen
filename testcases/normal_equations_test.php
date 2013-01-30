@@ -5,7 +5,7 @@
  * @author Yu Chao <yuchao86@gmail.com>
  * @package Robotgen/algorithm/genetic/
  * @version v1.0
- * @license  GPL     
+ * @license  GPL
  *
  * @reference
  *	-Algorithm Reference
@@ -18,12 +18,11 @@
  *  Algorithm Description
  *=================================================================
  */
- namespace Robotgen;
- 
+// namespace Robotgen;
+
 require_once "PHPUnit.php";
 
-require_once "../lib/accessory/matrix.php";
-require_once "../lib/parametric/regression.php";
+require_once "../LearningLibrary.php";
 
 class NormalEquationsTest extends PHPUnit_TestCase {
 
@@ -37,7 +36,7 @@ class NormalEquationsTest extends PHPUnit_TestCase {
         );
         $ys = array(2, 4, 6, 8);
 
-        $ner = new LL_NormalEquations_Regression($xs, $ys);
+        $ner = new Linear_NormalEquations_Regression($xs, $ys);
         $result = $ner->train();
         var_dump($result);
         $this->assertEquals($result[0], 0);
@@ -47,14 +46,14 @@ class NormalEquationsTest extends PHPUnit_TestCase {
 }
 
 /**
- * 	make the test suite object
+ * 	make the test suite object
  */
 $suite = new PHPUnit_TestSuite();
 $suite->addTest(new NormalEquationsTest('testNormalRegression'));
 
 
 /**
- * 	print the PHPUnit result to HTML
+ * 	print the PHPUnit result to HTML
  */
 $phpunit = new PHPUnit();
 $result = $phpunit->run($suite);

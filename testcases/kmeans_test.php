@@ -5,7 +5,7 @@
  * @author Yu Chao <yuchao86@gmail.com>
  * @package Robotgen/algorithm/genetic/
  * @version v1.0
- * @license  GPL     
+ * @license  GPL
  *
  * @reference
  *	-Algorithm Reference
@@ -18,11 +18,11 @@
  *  Algorithm Description
  *=================================================================
  */
- namespace Robotgen;
- 
+ //namespace Robotgen;
+
 require_once "PHPUnit.php";
 
-require_once "../lib/unsupervised/kmeans.php";
+require_once "../LearningLibrary.php";
 
 class KMeansTest extends PHPUnit_TestCase {
 
@@ -54,17 +54,17 @@ class KMeansTest extends PHPUnit_TestCase {
     }
 
     public function testDistanceToCentroid() {
-        $result = __ll_distance_to_centroid(array(1, 1, 1, 1), array(3, 3, 3, 3));
+        $result = Kmeans::__ll_distance_to_centroid(array(1, 1, 1, 1), array(3, 3, 3, 3));
         $this->assertEquals(4, $result);
-        $result = __ll_distance_to_centroid(array(1, 1, 1, 1), array(3, 1, 3, 3));
+        $result = Kmeans::__ll_distance_to_centroid(array(1, 1, 1, 1), array(3, 1, 3, 3));
         $this->assertEquals(3.46, round($result, 2));
-        $result = __ll_distance_to_centroid(array(1, 2), array(2, 1));
+        $result = Kmeans::__ll_distance_to_centroid(array(1, 2), array(2, 1));
         $this->assertEquals(sqrt(2), $result);
-        $result = __ll_distance_to_centroid(array(0, 0), array(0, 0));
+        $result = Kmeans::__ll_distance_to_centroid(array(0, 0), array(0, 0));
         $this->assertEquals(0, $result);
-        $result = __ll_distance_to_centroid(array(5.3, 5.3), array(5.3, 5.3));
+        $result = Kmeans::__ll_distance_to_centroid(array(5.3, 5.3), array(5.3, 5.3));
         $this->assertEquals(0, $result);
-        $result = __ll_distance_to_centroid(array(1000), array(20));
+        $result = Kmeans::__ll_distance_to_centroid(array(1000), array(20));
         $this->assertEquals(980, $result);
     }
 
@@ -103,7 +103,7 @@ class KMeansTest extends PHPUnit_TestCase {
             array(1, 2)
         );
 
-        $this->assertEquals(array(array(1, 1), array(2, 2)), __ll_flip($array));
+        $this->assertEquals(array(array(1, 1), array(2, 2)), Kmeans::__ll_flip($array));
 
 
         // non square test.
@@ -112,7 +112,7 @@ class KMeansTest extends PHPUnit_TestCase {
             array(1, 2, 3)
         );
 
-        $this->assertEquals(array(array(5, 1), array(9, 2), array(8, 3)), __ll_flip($array));
+        $this->assertEquals(array(array(5, 1), array(9, 2), array(8, 3)), Kmeans::__ll_flip($array));
 
 
         $array = array(
@@ -121,7 +121,7 @@ class KMeansTest extends PHPUnit_TestCase {
             array(-1, -2, -3)
         );
 
-        $this->assertEquals(array(array(0.1, 1, -1), array(0.2, 2, -2), array(0.3, 3, -3)), __ll_flip($array));
+        $this->assertEquals(array(array(0.1, 1, -1), array(0.2, 2, -2), array(0.3, 3, -3)), Kmeans::__ll_flip($array));
     }
 
     public function testRepositionCentroids() {

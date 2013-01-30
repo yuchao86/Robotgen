@@ -5,7 +5,7 @@
  * @author Yu Chao <yuchao86@gmail.com>
  * @package Robotgen/algorithm/genetic/
  * @version v1.0
- * @license  GPL     
+ * @license  GPL
  *
  * @reference
  *	-Algorithm Reference
@@ -18,11 +18,11 @@
  *  Algorithm Description
  *=================================================================
  */
- namespace Robotgen;
- 
+// namespace Robotgen;
+
 require_once "PHPUnit.php";
 
-require_once "../lib/accessory/matrix.php";
+require_once "../LearningLibrary.php";
 
 class MatrixTest extends PHPUnit_TestCase {
 
@@ -31,42 +31,42 @@ class MatrixTest extends PHPUnit_TestCase {
         $a = array(array(2, 3), array(3, 4));
         $b = array(array(-4, 3), array(3, -2));
 
-        $am = new LL_Matrix($a);
-        $bm = new LL_Matrix($b);
+        $am = new Linear_Matrix($a);
+        $bm = new Linear_Matrix($b);
 
         $this->assertEquals($am->invert(), $bm);
         $this->assertEquals($bm->invert(), $am);
 
         $this->assertEquals($am->multiply($am->invert()), $this->getIdentityMatrix(2));
-        // this tests a property about matrix multiplication. 
+        // this tests a property about matrix multiplication.
         //could find bugs in a variety of places though, not necessarily just in invert
         $this->assertEquals($bm->multiply($bm->invert()), $this->getIdentityMatrix(2));
-        // this tests a property about matrix multiplication. 
+        // this tests a property about matrix multiplication.
         //could find bugs in a variety of places though, not necessarily just in invert
 
         $this->assertEquals($this->getIdentityMatrix(4)->invert(), $this->getIdentityMatrix(4));
     }
 
     public function testDeterminant() {
-        $matrix = new LL_Matrix(array(array(5, 7), array(2, -3)));
+        $matrix = new Linear_Matrix(array(array(5, 7), array(2, -3)));
         $result = $matrix->determinant();
         $this->assertEquals($result, -29);
 
-        $matrix = new LL_Matrix(array(array(7, 4, 2, 0), array(6, 3, -1, 2), array(4, 6, 2, 5), array(8, 2, -7, 1)));  // this tests a series of subdeterminants (and cofactor matrices)
+        $matrix = new Linear_Matrix(array(array(7, 4, 2, 0), array(6, 3, -1, 2), array(4, 6, 2, 5), array(8, 2, -7, 1)));  // this tests a series of subdeterminants (and cofactor matrices)
         $result = $matrix->determinant();
         $this->assertEquals($result, -279);
 
-        $matrix = new LL_Matrix(array(array(-2, 3), array(5, 0.5)));
+        $matrix = new Linear_Matrix(array(array(-2, 3), array(5, 0.5)));
         $result = $matrix->determinant();
         $this->assertEquals($result, -16);
 
-        $matrix = new LL_Matrix(array(array(2, -2, 0), array(-1, 5, 1), array(3, 4, 5)));
+        $matrix = new Linear_Matrix(array(array(2, -2, 0), array(-1, 5, 1), array(3, 4, 5)));
         $result = $matrix->determinant();
         $this->assertEquals($result, 26);
     }
 
     public function testScalarMultiply() {
-        $matrix = new LL_Matrix(array(array(1, 1, 1), array(1, 1, 1), array(1, 1, 1)));
+        $matrix = new Linear_Matrix(array(array(1, 1, 1), array(1, 1, 1), array(1, 1, 1)));
         $result = $matrix->scalarMultiply(2);
         $this->checkAllValues($result, 2);
         $result = $result->scalarMultiply(1 / 2);
@@ -87,7 +87,7 @@ class MatrixTest extends PHPUnit_TestCase {
     public function testMultiply() {
         $identity3 = $this->getIdentityMatrix();
         $input = array(array(1, 2, 3), array(3, 2, 1), array(1, 2, 1));
-        $matrix = new LL_Matrix($input);
+        $matrix = new Linear_Matrix($input);
         $result = $matrix->multiply($identity3);
 
         for ($i = 0; $i < count($input); $i++) {
@@ -96,7 +96,7 @@ class MatrixTest extends PHPUnit_TestCase {
             }
         }
 
-        $result = $matrix->multiply(new LL_Matrix($input));   // test multiplying by itself.
+        $result = $matrix->multiply(new Linear_Matrix($input));   // test multiplying by itself.
         $this->assertNotEquals($result, false);
 
         $this->assertEquals($result->get(0, 0), 10);
@@ -114,8 +114,8 @@ class MatrixTest extends PHPUnit_TestCase {
         // test uneven shapes
         $input = array(array(1, 2, 3), array(0, 2, 0));
         $input2 = array(array(1, 2), array(2, 2), array(1, 1));
-        $matrix = new LL_Matrix($input);
-        $matrix2 = new LL_Matrix($input2);
+        $matrix = new Linear_Matrix($input);
+        $matrix2 = new Linear_Matrix($input2);
 
         $this->assertEquals($matrix->multiply($matrix), false);
         $this->assertEquals($matrix2->multiply($matrix2), false);
@@ -141,7 +141,7 @@ class MatrixTest extends PHPUnit_TestCase {
                 $result[$i][$j] = ($j == $i);
             }
         }
-        return new LL_Matrix($result);
+        return new Linear_Matrix($result);
     }
 
     private function checkAllValues($result, $value) {

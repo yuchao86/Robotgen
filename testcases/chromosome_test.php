@@ -6,7 +6,7 @@
  * @author Yu Chao <yuchao86@gmail.com>
  * @package Robotgen/algorithm/genetic/
  * @version v1.0
- * @license  GPL     
+ * @license  GPL
  *
  * @reference
  * 	-Algorithm Reference
@@ -27,7 +27,7 @@
  *=================================================================
  */
 //use Robotgen;
- 
+
 require_once "PHPUnit.php";
 require_once "../LearningLibrary.php";
 
@@ -35,22 +35,22 @@ require_once "../LearningLibrary.php";
 class ChromosomeTest extends PHPUnit_TestCase {
 
     public function testCrossoverStrategy() {
-        
+
         $male = array('a' => '1');
         $female = array('b' => '2');
-        
+
         $malechrome = new Chromosome($male);
         $femalechrome = new Chromosome($female);
-        
+
         //$malechrome ->calculateFitness();
         $strategy = CrossoverStrategy::getInstance();
         /* @var $child Chromosome */
-        
+
         $child = $strategy -> recombine($malechrome,$femalechrome);
-        
+
         $populate = new Population();
         $populate->selectChromosome($strategy);
-        
+
         $bestChromosome = $populate->getBestChromosome();
 
         $this->assertTrue($bestChromosome);
@@ -70,7 +70,7 @@ $suite = new PHPUnit_TestSuite();
 $suite->addTest(new KNNTest('testCrossoverStrategy'));
 
 /**
- * 	print the PHPUnit result to HTML
+ * 	print the PHPUnit result to HTML
  */
 $phpunit = new PHPUnit();
 $result = $phpunit->run($suite);

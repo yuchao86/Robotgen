@@ -18,7 +18,7 @@
  *  Algorithm Description
  *=================================================================
  */
- namespace Robotgen;
+ //namespace Robotgen;
 
 require_once "PHPUnit.php";
 require_once "../LearningLibrary.php";
