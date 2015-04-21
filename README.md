@@ -7,4 +7,4 @@ applications (like training, saving the trained data to a file, and then running
 
 any questions contacts me (yuchao86@gmail.com)
 
-
+Twitter add me @yuchao86
